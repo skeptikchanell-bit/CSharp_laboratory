@@ -1,0 +1,14 @@
+C:\Users\Пользователь\MyCSharpApp\bin\Debug\net10.0\MyCSharpApp.exe
+C:\Users\Пользователь\MyCSharpApp\bin\Debug\net10.0\MyCSharpApp.deps.json
+C:\Users\Пользователь\MyCSharpApp\bin\Debug\net10.0\MyCSharpApp.runtimeconfig.json
+C:\Users\Пользователь\MyCSharpApp\bin\Debug\net10.0\MyCSharpApp.dll
+C:\Users\Пользователь\MyCSharpApp\bin\Debug\net10.0\MyCSharpApp.pdb
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.AssemblyInfoInputs.cache
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.AssemblyInfo.cs
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.csproj.CoreCompileInputs.cache
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.dll
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\refint\MyCSharpApp.dll
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.pdb
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\MyCSharpApp.genruntimeconfig.cache
+C:\Users\Пользователь\MyCSharpApp\obj\Debug\net10.0\ref\MyCSharpApp.dll
