@@ -3,10 +3,6 @@ using System.Text;
 
 namespace LabWork1;
 
-/// <summary>
-/// Точка входа и пользовательский интерфейс
-/// лабораторной работы.
-/// </summary>
 public class Program
 {
     private const int MinNumber = -1000000;
