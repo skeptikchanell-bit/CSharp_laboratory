@@ -158,8 +158,6 @@ public class Lab1
         return count;
     }
 
-    // Методы, которые рисуют в консоль. Их удобно оставить здесь,
-    // потому что по условию задачи они возвращают void и печатают сами.
     public void Square(int x)
     {
         for (var row = 0; row < x; row++)
