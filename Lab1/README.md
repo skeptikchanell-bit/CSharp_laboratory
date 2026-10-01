@@ -1,3 +1,4 @@
+<img width="962" height="181" alt="Снимок экрана 2026-10-01 114654" src="https://github.com/user-attachments/assets/2a3ab336-8814-4545-b03c-b7f2c70b91f0" />
 # Мизев Евгений ИТ-5 Лабораторная №1
 
 # Задание 1
