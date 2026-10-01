@@ -331,11 +331,8 @@ public class Program
 
     private void PrintBanner()
     {
-        Console.WriteLine("===================================================");
         Console.WriteLine("   Лабораторная работа №1. Язык программирования C#");
-        Console.WriteLine("===================================================");
-        Console.WriteLine("Выбирайте пункт меню: введите цифру и нажмите Enter.");
-        Console.WriteLine("Если данные введены неверно, программа подскажет, что исправить.");
+        Console.WriteLine("Выбирайте пункт меню:");
     }
 
     private void PrintMainMenu()
