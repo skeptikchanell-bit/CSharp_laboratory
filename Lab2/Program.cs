@@ -2,32 +2,49 @@ using System;
 using System.Text;
 
 namespace LabWork2;
-/// Точка входа, меню, ввод/вывод.
+
 public class Program
 {
-    private const int MinCoord = -10000;
-    private const int MaxCoord = 10000;
-    private const int MinGrade = 1;
-    private const int MaxGrade = 5;
-    private const int MaxGrades = 20;
+    private const int MinCoordinate = -1000;
+    private const int MaxCoordinate = 1000;
+    private const int PointCount = 3;
 
+    // Вывод и ввод с проверкой.
 
-    private void WriteError(string message)
+    private void PrintBanner()
     {
-        Console.WriteLine("  Ошибка: " + message);
+        Console.WriteLine("===================================================");
+        Console.WriteLine("   Лабораторная работа №2. Классы и объекты в C#");
+        Console.WriteLine("===================================================");
+        Console.WriteLine("Выбирайте пункт меню: введите цифру и нажмите Enter.");
+        Console.WriteLine("Если данные введены неверно, программа подскажет, что исправить.");
     }
 
-    private void PrintResult(string text)
+    private void PrintMenu()
     {
-        Console.WriteLine("Результат: " + text);
+        Console.WriteLine();
+        Console.WriteLine("----- ГЛАВНОЕ МЕНЮ -----");
+        Console.WriteLine("1 — Задание 1.1. Точка координат (ввод трёх точек)");
+        Console.WriteLine("2 — Задание 2.1. Прямая (общие и отдельные точки у линий)");
+        Console.WriteLine("3 — Задание 3.1. Студент (ссылка и копия массива оценок)");
+        Console.WriteLine("4 — Задание 4.1. Создаём точку (только через координаты)");
+        Console.WriteLine("5 — Задание 4.7. Создаём студента (один конструктор)");
+        Console.WriteLine("6 — Задание 5.6. Студент отличник (средний балл)");
+        Console.WriteLine("7 — Все задания подряд");
+        Console.WriteLine("0 — Выход");
     }
 
     private void PrintTitle(string title, string description)
     {
         Console.WriteLine();
-        Console.WriteLine("=== " + title + " ===");
+        Console.WriteLine($"=== {title} ===");
         Console.WriteLine(description);
         Console.WriteLine();
+    }
+
+    private void WriteError(string message)
+    {
+        Console.WriteLine($"  Ошибка: {message}");
     }
 
     private string YesNo(bool value)
@@ -36,9 +53,9 @@ public class Program
         {
             return "да";
         }
+
         return "нет";
     }
-
 
     private string ReadLineOrExit()
     {
@@ -54,30 +71,11 @@ public class Program
         return line;
     }
 
-    private bool Contains(int[] arr, int value)
+    private void Pause()
     {
-        for (int i = 0; i < arr.Length; i++)
-        {
-            if (arr[i] == value)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private string JoinNumbers(int[] arr)
-    {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < arr.Length; i++)
-        {
-            if (i > 0)
-            {
-                sb.Append(", ");
-            }
-            sb.Append(arr[i]);
-        }
-        return sb.ToString();
+        Console.WriteLine();
+        Console.Write("Нажмите Enter, чтобы вернуться в меню...");
+        ReadLineOrExit();
     }
 
     private int ReadChoice(int[] allowed)
@@ -86,15 +84,12 @@ public class Program
         {
             Console.Write("Ваш выбор: ");
 
-            if (int.TryParse(ReadLineOrExit(), out int value)
-                && Contains(allowed, value))
+            if (int.TryParse(ReadLineOrExit(), out int value) && (Array.IndexOf(allowed, value) >= 0))
             {
                 return value;
             }
 
-            WriteError(
-                "такого пункта нет. Введите один из номеров: "
-                + JoinNumbers(allowed) + ".");
+            WriteError("такого пункта нет. Введите число от 0 до 7.");
         }
     }
 
@@ -102,21 +97,16 @@ public class Program
     {
         while (true)
         {
-            Console.Write(
-                prompt + " (целое от " + min + " до " + max + "): ");
+            Console.Write($"{prompt} (целое число от {min} до {max}): ");
             string text = ReadLineOrExit();
 
             if (!int.TryParse(text, out int value))
             {
-                WriteError(
-                    "не удалось распознать «" + text + "» как целое. "
-                    + "Попробуйте ещё раз.");
+                WriteError($"не удалось распознать «{text}» как целое число. Попробуйте ещё раз.");
             }
-            else if (value < min || value > max)
+            else if ((value < min) || (value > max))
             {
-                WriteError(
-                    "число " + value + " вне диапазона от " + min
-                    + " до " + max + ". Попробуйте ещё раз.");
+                WriteError($"число {value} вне диапазона от {min} до {max}. Попробуйте ещё раз.");
             }
             else
             {
@@ -125,244 +115,224 @@ public class Program
         }
     }
 
-    private int[] ReadGrades(string prompt)
+    private bool IsDuplicate(Point[] points, int count, int x, int y)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            if ((points[i].X == x) && (points[i].Y == y))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Point ReadPoint(int number, Point[] points, int count)
     {
         while (true)
         {
-            Console.Write(
-                prompt + " (оценки 1-5 через пробел, 0-"
-                + MaxGrades + " штук): ");
-            string[] parts = ReadLineOrExit().Split(
-                new char[] { ' ', ',' },
-                StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine($"Точка {number}:");
+            int x = ReadInt("  Введите X", MinCoordinate, MaxCoordinate);
+            int y = ReadInt("  Введите Y", MinCoordinate, MaxCoordinate);
 
-            if (parts.Length > MaxGrades)
+            if (!IsDuplicate(points, count, x, y))
             {
-                WriteError(
-                    "слишком много оценок: " + parts.Length
-                    + ". Максимум " + MaxGrades + ".");
-                continue;
+                return new Point(x, y);
             }
 
-            if (parts.Length == 0)
-            {
-                return new int[0];
-            }
-
-            int[] result = new int[parts.Length];
-            bool ok = true;
-
-            for (int i = 0; i < parts.Length; i++)
-            {
-                if (!int.TryParse(parts[i], out int value)
-                    || value < MinGrade
-                    || value > MaxGrade)
-                {
-                    WriteError(
-                        "элемент «" + parts[i] + "» не подходит: "
-                        + "нужна оценка от " + MinGrade
-                        + " до " + MaxGrade + ".");
-                    ok = false;
-                    break;
-                }
-                result[i] = value;
-            }
-
-            if (ok)
-            {
-                return result;
-            }
+            WriteError("такая точка уже есть, введите точку с другими координатами.");
         }
     }
 
+    private void PrintLines(Line line1, Line line2, Line line3)
+    {
+        Console.WriteLine($"   Линия 1: {line1}");
+        Console.WriteLine($"   Линия 2: {line2}");
+        Console.WriteLine($"   Линия 3: {line3}");
+    }
+
+    private void PrintStudentInfo(Student student)
+    {
+        Console.WriteLine($"  {student}");
+        Console.WriteLine($"    Средний балл: {student.Average:F2}");
+        Console.WriteLine($"    Отличник: {YesNo(student.IsExcellent)}");
+    }
+
+    // Демонстрации заданий.
+
     private void RunPoint()
     {
-        PrintTitle(
-            "Задание 1.1 и 4.1. Точка",
-            "Создаём три точки с разными координатами "
-            + "и выводим их текстовое представление.");
+        PrintTitle("Задание 1.1. Точка координат", "Создаём три точки с разными координатами и выводим их текстовое представление.");
 
-        int x1 = ReadInt("Введите X первой точки", MinCoord, MaxCoord);
-        int y1 = ReadInt("Введите Y первой точки", MinCoord, MaxCoord);
-        int x2 = ReadInt("Введите X второй точки", MinCoord, MaxCoord);
-        int y2 = ReadInt("Введите Y второй точки", MinCoord, MaxCoord);
-        int x3 = ReadInt("Введите X третьей точки", MinCoord, MaxCoord);
-        int y3 = ReadInt("Введите Y третьей точки", MinCoord, MaxCoord);
+        var points = new Point[PointCount];
 
-        Point p1 = new Point(x1, y1);
-        Point p2 = new Point(x2, y2);
-        Point p3 = new Point(x3, y3);
+        for (var i = 0; i < points.Length; i++)
+        {
+            points[i] = ReadPoint(i + 1, points, i);
+        }
 
-        Console.WriteLine("Точка 1: " + p1);
-        Console.WriteLine("Точка 2: " + p2);
-        Console.WriteLine("Точка 3: " + p3);
+        Console.WriteLine();
+        Console.WriteLine("Созданные точки:");
 
-        PrintResult("три точки успешно созданы и выведены");
+        for (var i = 0; i < points.Length; i++)
+        {
+            Console.WriteLine($"  Точка {i + 1}: {points[i]}");
+        }
     }
 
     private void RunLine()
     {
-        PrintTitle(
-            "Задание 2.1. Линия",
-            "Линия 3 начинается там же, где линия 1, "
-            + "и заканчивается там же, где линия 2. "
-            + "Демонстрация ссылочной семантики.");
+        PrintTitle("Задание 2.1. Прямая", "Линия задаётся двумя точками. Линия 3 использует те же объекты Точка, что линии 1 и 2.");
 
-        // Линия 1: (1;3) → (23;8)
-        Point start1 = new Point(1, 3);
-        Point end1 = new Point(23, 8);
-        Line line1 = new Line(start1, end1);
+        var line1 = new Line(new Point(1, 3), new Point(23, 8));
+        var line2 = new Line(new Point(5, 10), new Point(25, 10));
+        var line3 = new Line(line1.Start, line2.End);
 
-        // Линия 2: (5;10) → (25;10)
-        Point start2 = new Point(5, 10);
-        Point end2 = new Point(25, 10);
-        Line line2 = new Line(start2, end2);
+        Console.WriteLine("1-3. Созданы три линии. Линия 3 начинается там же, где линия 1,");
+        Console.WriteLine("     и заканчивается там же, где линия 2:");
+        PrintLines(line1, line2, line3);
 
-        // Линия 3: начало как у line1, конец как у line2
-        Line line3 = new Line(line1.Start, line2.End);
-
-        Console.WriteLine("Начальные линии:");
-        Console.WriteLine("  line1: " + line1);
-        Console.WriteLine("  line2: " + line2);
-        Console.WriteLine("  line3: " + line3);
-
-        // Пункт 4: меняем координаты первой и второй линий
         Console.WriteLine();
-        Console.WriteLine("Меняем координаты line1 и line2...");
-        line1.Start.X = 10;
-        line1.Start.Y = 20;
-        line2.End.X = 100;
-        line2.End.Y = 50;
+        Console.WriteLine("4. Меняем координаты самих точек линий 1 и 2:");
+        line1.Start.X = 4;
+        line1.Start.Y = 6;
+        line1.End.X = 30;
+        line1.End.Y = 9;
+        line2.Start.X = 7;
+        line2.End.X = 40;
+        PrintLines(line1, line2, line3);
+        Console.WriteLine("   Линия 3 сдвинулась вместе с ними: она хранит ссылки на те же точки.");
 
-        Console.WriteLine("После изменения line1 и line2:");
-        Console.WriteLine("  line1: " + line1);
-        Console.WriteLine("  line2: " + line2);
-        Console.WriteLine("  line3: " + line3);
-
-        // Пункт 5: заменяем Start линии 1 на новую точку
         Console.WriteLine();
-        Console.WriteLine(
-            "Заменяем Start линии 1 на НОВУЮ точку — "
-            + "line3 не должна измениться:");
-        line1.Start = new Point(777, 888);
-        Console.WriteLine("  line1: " + line1);
-        Console.WriteLine("  line3: " + line3);
-
-        PrintResult("демонстрация ссылочной семантики завершена");
+        Console.WriteLine("5. Назначаем линии 1 новые точки (заменяем объекты, а не меняем их):");
+        line1.Start = new Point(100, 100);
+        line1.End = new Point(200, 150);
+        PrintLines(line1, line2, line3);
+        Console.WriteLine("   Линия 3 не изменилась: она по-прежнему ссылается на прежние точки.");
     }
 
-    private void RunStudent()
+    private void RunStudentCopy()
     {
-        PrintTitle(
-            "Задание 3.1 / 5.6. Студент",
-            "Создаём студентов, демонстрируем поверхностное "
-            + "и глубокое копирование, считаем средний балл.");
+        PrintTitle("Задание 3.1. Студент", "Показываем разницу между присваиванием ссылки на массив и копированием его содержимого.");
 
-        // 1. Вася с оценками 3, 4, 5.
-        Student vasya = new Student("Вася", new int[] { 3, 4, 5 });
-        Console.WriteLine("Вася: " + vasya);
+        var vasya = new Student("Вася", 3, 4, 5);
+        Console.WriteLine("1. Создан студент Вася с оценками 3, 4, 5:");
+        Console.WriteLine($"   {vasya}");
 
-        // 2. Петя — поверхностное копирование оценок Васи.
-        Student petya = new Student("Петя");
-        petya.ShallowCopyGradesFrom(vasya);
-        Console.WriteLine("Петя (поверхностное копирование): " + petya);
+        var petya = new Student("Петя");
+        petya.Grades = vasya.Grades;
+        Console.WriteLine("2. Создан студент Петя; полю его оценок присвоено поле оценок Васи.");
 
-        // 3. Меняем первую оценку Пети на 5.
-        petya.SetGradeAt(0, 5);
+        petya.Grades[0] = 5;
+        Console.WriteLine("3. Первая оценка Пети заменена на 5. Теперь у студентов:");
+        Console.WriteLine($"   {vasya}");
+        Console.WriteLine($"   {petya}");
+        Console.WriteLine("   Объяснение: массив — ссылочный тип. Присваивание скопировало не оценки,");
+        Console.WriteLine("   а ссылку на один и тот же массив, поэтому Вася и Петя используют общий");
+        Console.WriteLine("   массив, и изменение через Петю видно у Васи.");
 
-        Console.WriteLine();
-        Console.WriteLine("После замены первой оценки Пети на 5:");
-        Console.WriteLine("  Вася: " + vasya);
-        Console.WriteLine("  Петя: " + petya);
-        Console.WriteLine(
-            "  Пояснение: Петя и Вася ссылались на ОДИН массив, "
-            + "поэтому изменение отразилось на обоих.");
-
-        // 4. Андрей — глубокое копирование оценок Васи.
-        Student andrey = new Student(vasya);
-        andrey.Name = "Андрей";
-
-        // Меняем оценки Васи — Андрей не должен измениться.
-        vasya.SetGradeAt(0, 1);
-        vasya.SetGradeAt(1, 1);
-
-        Console.WriteLine();
-        Console.WriteLine(
-            "После изменения оценок Васи "
-            + "(Андрей — глубокая копия):");
-        Console.WriteLine("  Вася: " + vasya);
-        Console.WriteLine("  Андрей: " + andrey);
-
-        // 5. Средний балл и отличник.
-        Console.WriteLine();
-        PrintTitle(
-            "Задание 5.6. Средний балл и отличник",
-            "Выводим средний балл и признак отличника.");
-
-        Student vasya2 = new Student("Вася", new int[] { 3, 4, 5, 4 });
-        Student petya2 = new Student("Петя", new int[] { 5, 5, 5, 5 });
-
-        Console.WriteLine("Вася: " + vasya2);
-        Console.WriteLine("  средний балл: " + vasya2.AverageGrade());
-        Console.WriteLine("  отличник: " + YesNo(vasya2.IsExcellent()));
-
-        Console.WriteLine("Петя: " + petya2);
-        Console.WriteLine("  средний балл: " + petya2.AverageGrade());
-        Console.WriteLine("  отличник: " + YesNo(petya2.IsExcellent()));
-
-        PrintResult("демонстрация студента завершена");
+        var copy = new int[vasya.Grades.Length];
+        Array.Copy(vasya.Grades, copy, vasya.Grades.Length);
+        var andrey = new Student("Андрей", copy);
+        vasya.Grades[0] = 2;
+        Console.WriteLine("4. Создан студент Андрей с копией оценок Васи (отдельный массив).");
+        Console.WriteLine("   Первая оценка Васи заменена на 2:");
+        Console.WriteLine($"   {vasya}");
+        Console.WriteLine($"   {andrey}");
+        Console.WriteLine("   Андрей не изменился: у него собственный массив оценок.");
     }
 
-    private void RunStudentConstructors()
+    private void RunNewPoint()
     {
-        PrintTitle(
-            "Задание 4.7. Студент — два конструктора",
-            "Один конструктор — только имя, "
-            + "второй — имя и оценки.");
+        PrintTitle("Задание 4.1. Создаём точку", "Точку можно создать только указав обе координаты: new Point(x, y).");
 
-        Student vasya = new Student("Вася", new int[] { 3, 4, 5 });
-        Student maksim = new Student("Максим");
+        var first = new Point(3, 5);
+        var second = new Point(25, 6);
+        var third = new Point(7, 8);
 
-        Console.WriteLine("Вася: " + vasya);
-        Console.WriteLine("Максим: " + maksim);
-
-        PrintResult("оба конструктора работают");
+        Console.WriteLine($"  Точка с координатами 3;5: {first}");
+        Console.WriteLine($"  Точка с координатами 25;6: {second}");
+        Console.WriteLine($"  Точка с координатами 7;8: {third}");
     }
 
-
-    private void PrintBanner()
+    private void RunNewStudent()
     {
-        Console.WriteLine(
-            "===================================================");
-        Console.WriteLine(
-            "   Лабораторная работа №2. ООП в C#. Вариант 9");
-        Console.WriteLine(
-            "===================================================");
-        Console.WriteLine(
-            "Выбирайте пункт меню: введите цифру и нажмите Enter.");
-        Console.WriteLine(
-            "При неверном вводе программа подскажет, что исправить.");
+        PrintTitle("Задание 4.7. Создаём студента", "Один конструктор Student(name, params grades) создаёт студента с оценками и без них.");
+
+        var vasya = new Student("Вася", 3, 4, 5);
+        var maxim = new Student("Максим");
+
+        Console.WriteLine($"  Студент с оценками: {vasya}");
+        Console.WriteLine($"  Студент без оценок: {maxim}");
     }
 
-    private void PrintMenu()
+    private void RunExcellentStudent()
     {
-        Console.WriteLine();
-        Console.WriteLine("----- ГЛАВНОЕ МЕНЮ -----");
-        Console.WriteLine("1 — Задание 1.1 / 4.1. Точка");
-        Console.WriteLine("2 — Задание 2.1. Линия");
-        Console.WriteLine("3 — Задание 3.1 / 5.6. Студент");
-        Console.WriteLine(
-            "4 — Задание 4.7. Студент (два конструктора)");
-        Console.WriteLine("5 — Показать всё подряд");
-        Console.WriteLine("0 — Выход");
+        PrintTitle("Задание 5.6. Студент отличник", "Выводим средний балл и признак отличника (есть оценки и все они равны 5).");
+
+        var vasya = new Student("Вася", 3, 4, 5, 4);
+        var petya = new Student("Петя", 5, 5, 5, 5);
+
+        PrintStudentInfo(vasya);
+        PrintStudentInfo(petya);
     }
 
     private void RunAll()
     {
         RunPoint();
         RunLine();
-        RunStudent();
-        RunStudentConstructors();
+        RunStudentCopy();
+        RunNewPoint();
+        RunNewStudent();
+        RunExcellentStudent();
+    }
+
+    private void Run()
+    {
+        var running = true;
+
+        PrintBanner();
+
+        while (running)
+        {
+            PrintMenu();
+
+            switch (ReadChoice([1, 2, 3, 4, 5, 6, 7, 0]))
+            {
+                case 1:
+                    RunPoint();
+                    break;
+                case 2:
+                    RunLine();
+                    break;
+                case 3:
+                    RunStudentCopy();
+                    break;
+                case 4:
+                    RunNewPoint();
+                    break;
+                case 5:
+                    RunNewStudent();
+                    break;
+                case 6:
+                    RunExcellentStudent();
+                    break;
+                case 7:
+                    RunAll();
+                    break;
+                default:
+                    running = false;
+                    break;
+            }
+
+            if (running)
+            {
+                Pause();
+            }
+        }
+
+        Console.WriteLine("Спасибо за работу! До свидания.");
     }
 
     public static void Main()
@@ -370,39 +340,7 @@ public class Program
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
 
-        Program program = new Program();
-
-        program.PrintBanner();
-
-        bool running = true;
-
-        while (running)
-        {
-            program.PrintMenu();
-
-            switch (program.ReadChoice(new int[] { 1, 2, 3, 4, 5, 0 }))
-            {
-                case 1:
-                    program.RunPoint();
-                    break;
-                case 2:
-                    program.RunLine();
-                    break;
-                case 3:
-                    program.RunStudent();
-                    break;
-                case 4:
-                    program.RunStudentConstructors();
-                    break;
-                case 5:
-                    program.RunAll();
-                    break;
-                default:
-                    running = false;
-                    break;
-            }
-        }
-
-        Console.WriteLine("Спасибо за работу! До свидания.");
+        var program = new Program();
+        program.Run();
     }
 }
