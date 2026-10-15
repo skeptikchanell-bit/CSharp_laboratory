@@ -9,7 +9,7 @@ public class Program
     private const int MaxCoordinate = 1000;
     private const int PointCount = 3;
 
-    // Вывод и ввод с проверкой.
+
 
     private void PrintBanner()
     {
@@ -17,7 +17,7 @@ public class Program
         Console.WriteLine("   Лабораторная работа №2. Классы и объекты в C#");
         Console.WriteLine("===================================================");
         Console.WriteLine("Выбирайте пункт меню: введите цифру и нажмите Enter.");
-        Console.WriteLine("Если данные введены неверно, программа подскажет, что исправить.");
+        Console.WriteLine("Если данные введены неверно, программа потребует повторного ввода.");
     }
 
     private void PrintMenu()
@@ -159,7 +159,7 @@ public class Program
         Console.WriteLine($"    Отличник: {YesNo(student.IsExcellent)}");
     }
 
-    // Демонстрации заданий.
+
 
     private void RunPoint()
     {
@@ -202,14 +202,14 @@ public class Program
         line2.Start.X = 7;
         line2.End.X = 40;
         PrintLines(line1, line2, line3);
-        Console.WriteLine("   Линия 3 сдвинулась вместе с ними: она хранит ссылки на те же точки.");
+        Console.WriteLine("   Линия 3 сдвинулась вместе с ними");
 
         Console.WriteLine();
-        Console.WriteLine("5. Назначаем линии 1 новые точки (заменяем объекты, а не меняем их):");
+        Console.WriteLine("5. Назначаем линии 1 новые точки:");
         line1.Start = new Point(100, 100);
         line1.End = new Point(200, 150);
         PrintLines(line1, line2, line3);
-        Console.WriteLine("   Линия 3 не изменилась: она по-прежнему ссылается на прежние точки.");
+        Console.WriteLine("   Линия 3 не изменилась.");
     }
 
     private void RunStudentCopy()
@@ -228,19 +228,17 @@ public class Program
         Console.WriteLine("3. Первая оценка Пети заменена на 5. Теперь у студентов:");
         Console.WriteLine($"   {vasya}");
         Console.WriteLine($"   {petya}");
-        Console.WriteLine("   Объяснение: массив — ссылочный тип. Присваивание скопировало не оценки,");
-        Console.WriteLine("   а ссылку на один и тот же массив, поэтому Вася и Петя используют общий");
-        Console.WriteLine("   массив, и изменение через Петю видно у Васи.");
+
 
         var copy = new int[vasya.Grades.Length];
         Array.Copy(vasya.Grades, copy, vasya.Grades.Length);
         var andrey = new Student("Андрей", copy);
         vasya.Grades[0] = 2;
-        Console.WriteLine("4. Создан студент Андрей с копией оценок Васи (отдельный массив).");
+        Console.WriteLine("4. Создан студент Андрей с копией оценок Васи .");
         Console.WriteLine("   Первая оценка Васи заменена на 2:");
         Console.WriteLine($"   {vasya}");
         Console.WriteLine($"   {andrey}");
-        Console.WriteLine("   Андрей не изменился: у него собственный массив оценок.");
+        Console.WriteLine("   Андрей не изменился.");
     }
 
     private void RunNewPoint()
