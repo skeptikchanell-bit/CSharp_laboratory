@@ -17,6 +17,7 @@ public class Lab1
         return x - '0';
     }
 
+
     public bool Is2Digits(int x)
     {
         return ((x >= 10) && (x <= 99)) || ((x <= -10) && (x >= -99));
