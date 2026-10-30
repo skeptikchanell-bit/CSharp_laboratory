@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Пользователь\\C-_laboratory\\MyCSharpApp.csproj",
-      "projectName": "MyCSharpApp",
-      "projectPath": "C:\\Users\\Пользователь\\C-_laboratory\\MyCSharpApp.csproj",
+      "projectUniqueName": "C:\\Users\\Пользователь\\C-_laboratory\\C-_laboratory.csproj",
+      "projectName": "C-_laboratory",
+      "projectPath": "C:\\Users\\Пользователь\\C-_laboratory\\C-_laboratory.csproj",
       "packagesPath": "C:\\Users\\Пользователь\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Пользователь\\C-_laboratory\\obj\\",
       "projectStyle": "PackageReference",

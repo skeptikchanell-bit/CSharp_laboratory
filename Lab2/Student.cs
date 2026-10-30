@@ -4,51 +4,50 @@ public class Student
 {
     private const int ExcellentGrade = 5;
 
-    private string name;
-    private int[] grades;
+    private string _name;
+    private int[] _grades;
 
     public Student(string name, params int[] grades)
     {
-        this.name = name;
-        this.grades = grades;
+        _name = name;
+        _grades = grades;
     }
 
-    // Конструктор без оценок — массив создаётся здесь, а не в объявлении поля
     public Student(string name)
     {
-        this.name = name;
-        this.grades = [];
+        _name = name;
+        _grades = [];
     }
 
     public string Name
     {
-        get { return name; }
-        set { name = value; }
+        get { return _name; }
+        set { _name = value; }
     }
 
     public int[] Grades
     {
-        get { return grades; }
-        set { grades = value; }
+        get { return _grades; }
+        set { _grades = value; }
     }
 
     public double Average
     {
         get
         {
-            if (grades.Length == 0)
+            if (_grades.Length == 0)
             {
                 return 0;
             }
 
             var sum = 0;
 
-            foreach (int grade in grades)
+            foreach (int grade in _grades)
             {
                 sum += grade;
             }
 
-            return (double)sum / grades.Length;
+            return (double)sum / _grades.Length;
         }
     }
 
@@ -56,12 +55,12 @@ public class Student
     {
         get
         {
-            if (grades.Length == 0)
+            if (_grades.Length == 0)
             {
                 return false;
             }
 
-            foreach (int grade in grades)
+            foreach (int grade in _grades)
             {
                 if (grade != ExcellentGrade)
                 {
@@ -75,7 +74,7 @@ public class Student
 
     public override string ToString()
     {
-        string list = string.Join(", ", grades);
-        return $"{name}: [{list}]";
+        string list = string.Join(", ", _grades);
+        return $"{_name}: [{list}]";
     }
 }

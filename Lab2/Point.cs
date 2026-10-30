@@ -2,29 +2,29 @@ namespace LabWork2;
 
 public class Point
 {
-    private int x;
-    private int y;
+    private int _x;
+    private int _y;
 
     public Point(int x, int y)
     {
-        this.x = x;
-        this.y = y;
+        _x = x;
+        _y = y;
     }
 
     public int X
     {
-        get { return x; }
-        set { x = value; }
+        get { return _x; }
+        set { _x = value; }
     }
 
     public int Y
     {
-        get { return y; }
-        set { y = value; }
+        get { return _y; }
+        set { _y = value; }
     }
 
     public override string ToString()
     {
-        return $"{{{x};{y}}}";
+        return $"{{{_x};{_y}}}";
     }
 }
