@@ -1,0 +1,15 @@
+C:\Users\Пользователь\C-_laboratory\Lab4\bin\Debug\net10.0\C-_laboratory.exe
+C:\Users\Пользователь\C-_laboratory\Lab4\bin\Debug\net10.0\C-_laboratory.deps.json
+C:\Users\Пользователь\C-_laboratory\Lab4\bin\Debug\net10.0\C-_laboratory.runtimeconfig.json
+C:\Users\Пользователь\C-_laboratory\Lab4\bin\Debug\net10.0\C-_laboratory.dll
+C:\Users\Пользователь\C-_laboratory\Lab4\bin\Debug\net10.0\C-_laboratory.pdb
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.AssemblyInfoInputs.cache
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.AssemblyInfo.cs
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.csproj.CoreCompileInputs.cache
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.sourcelink.json
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.dll
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\refint\C-_laboratory.dll
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.pdb
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\C-_laboratory.genruntimeconfig.cache
+C:\Users\Пользователь\C-_laboratory\Lab4\obj\Debug\net10.0\ref\C-_laboratory.dll
