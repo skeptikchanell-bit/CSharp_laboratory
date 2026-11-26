@@ -1,48 +1,61 @@
-namespace LR5Var9.Models;
+using System;
 
-/// <summary>
-/// Клиент из листа "Клиенты".
-/// </summary>
+namespace Lab5.Models;
+
 public class Client
 {
-    public int Id { get; init; }
-    public string LastName { get; init; } = string.Empty;
-    public string FirstName { get; init; } = string.Empty;
-    public string MiddleName { get; init; } = string.Empty;
-    public string Residence { get; init; } = string.Empty;
+    public int Id { get; set; }
+    public string LastName { get; set; } = "";
+    public string FirstName { get; set; } = "";
+    public string MiddleName { get; set; } = "";
+    public string Residence { get; set; } = "";
 
-    public string FullName =>
-        $"{LastName} {FirstName} {MiddleName}".Trim();
+    public Client() { }
+    public Client(int id, string ln, string fn, string mn, string res)
+    {
+        Id = id; LastName = ln; FirstName = fn; MiddleName = mn; Residence = res;
+    }
+
+    public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();
+
+    public override string ToString() => $"[{Id}] {FullName,-35} | {Residence}";
 }
 
-/// <summary>
-/// Бронирование из листа "Бронирование".
-/// </summary>
 public class Booking
 {
-    public int Id { get; init; }
-    public int ClientId { get; init; }
-    public int RoomId { get; init; }
-    public DateTime BookingDate { get; init; }
-    public DateTime CheckInDate { get; init; }
-    public DateTime CheckOutDate { get; init; }
+    public int Id { get; set; }
+    public int ClientId { get; set; }
+    public int RoomId { get; set; }
+    public DateTime BookingDate { get; set; }
+    public DateTime CheckInDate { get; set; }
+    public DateTime CheckOutDate { get; set; }
 
-    /// <summary>Количество дней проживания.</summary>
+    public Booking() { }
+    public Booking(int id, int cId, int rId, DateTime bDate, DateTime inDate, DateTime outDate)
+    {
+        Id = id; ClientId = cId; RoomId = rId; BookingDate = bDate; CheckInDate = inDate; CheckOutDate = outDate;
+    }
+
     public int Days => (CheckOutDate - CheckInDate).Days;
+
+    public override string ToString() => 
+        $"[{Id}] Кл:{ClientId} Ном:{RoomId} Заезд:{CheckInDate:dd.MM.yyyy} Выезд:{CheckOutDate:dd.MM.yyyy}";
 }
 
-/// <summary>
-/// Строка итогового отчёта по клиенту.
-/// </summary>
-public class ClientReport
+public class Room
 {
-    public int ClientId { get; init; }
-    public string FullName { get; init; } = string.Empty;
-    public string Residence { get; init; } = string.Empty;
-    public int BookingsCount { get; init; }
-    public int TotalDays { get; init; }
+    public int Id { get; set; }
+    public int Floor { get; set; }
+    public int Capacity { get; set; }
+    public decimal Price { get; set; }
+    public int Category { get; set; }
 
-    public override string ToString() =>
-        $"{ClientId,5} | {FullName,-40} | " +
-        $"{Residence,-25} | {BookingsCount,3} | {TotalDays,5}";
+    public Room() { }
+    public Room(int id, int floor, int cap, decimal price, int cat)
+    {
+        Id = id; Floor = floor; Capacity = cap; Price = price; Category = cat;
+    }
+
+    public override string ToString() => 
+        $"[{Id}] Этаж:{Floor} Мест:{Capacity} Цена:{Price} Категория:{Category}";
 }
