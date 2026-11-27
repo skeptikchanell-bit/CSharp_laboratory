@@ -18,21 +18,35 @@ public class HotelManager
 
     public void LoadFromExcel(string path)
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        using var stream = File.Open(path, FileMode.Open, FileAccess.Read);
-        using var reader = ExcelReaderFactory.CreateReader(stream);
-        var dataSet = reader.AsDataSet(new ExcelDataSetConfiguration
-        {
-            ConfigureDataTable = _ => new ExcelDataTableConfiguration { UseHeaderRow = false }
-        });
+
+        Encoding.RegisterProvider(
+            CodePagesEncodingProvider.Instance);
+
+        using var stream = File.Open(
+            path, FileMode.Open, FileAccess.Read);
+            
+        using var reader = 
+            ExcelReaderFactory.CreateReader(stream);
+
+        var dataSet = reader.AsDataSet(
+            new ExcelDataSetConfiguration
+            {
+                ConfigureDataTable = _ => 
+                    new ExcelDataTableConfiguration 
+                    { 
+                        UseHeaderRow = false 
+                    }
+            });
 
         // 1. Клиенты
         DataTable dtClients = dataSet.Tables["Клиенты"] 
             ?? throw new Exception("Лист 'Клиенты' не найден");
+            
         for (int i = 1; i < dtClients.Rows.Count; i++)
         {
             DataRow r = dtClients.Rows[i];
             if (r[0] == null) continue;
+            
             Clients.Add(new Client(
                 Convert.ToInt32(r[0]),
                 r[1]?.ToString()?.Trim() ?? "",
@@ -45,10 +59,14 @@ public class HotelManager
         // 2. Бронирования
         DataTable dtBook = dataSet.Tables["Бронирование"] 
             ?? throw new Exception("Лист 'Бронирование' не найден");
+            
         for (int i = 1; i < dtBook.Rows.Count; i++)
         {
             DataRow r = dtBook.Rows[i];
-            if (r[0] == null || r[5] == null) continue; // Пропуск неполных строк
+            
+            // Пропуск неполных строк
+            if (r[0] == null || r[5] == null) continue; 
+            
             try
             {
                 Bookings.Add(new Booking(
@@ -60,12 +78,15 @@ public class HotelManager
                     Convert.ToDateTime(r[5])
                 ));
             }
-            catch { /* Пропускаем битые даты */ }
+            catch 
+            {  
+            }
         }
 
         // 3. Номера
         DataTable dtRooms = dataSet.Tables["Номера"] 
             ?? throw new Exception("Лист 'Номера' не найден");
+            
         for (int i = 1; i < dtRooms.Rows.Count; i++)
         {
             DataRow r = dtRooms.Rows[i];
@@ -79,8 +100,11 @@ public class HotelManager
                 .Replace(",", ".")
                 .Trim() ?? "0";
             
-            decimal price = decimal.TryParse(priceStr, NumberStyles.Any, 
-                CultureInfo.InvariantCulture, out decimal p) ? p : 0;
+            decimal price = decimal.TryParse(
+                priceStr, 
+                NumberStyles.Any, 
+                CultureInfo.InvariantCulture, 
+                out decimal p) ? p : 0;
 
             Rooms.Add(new Room(
                 Convert.ToInt32(r[0]),
@@ -96,8 +120,14 @@ public class HotelManager
     {
         var sb = new StringBuilder();
         sb.AppendLine("Код;Фамилия;Имя;Отчество;Город");
-        foreach (var c in Clients) 
-            sb.AppendLine($"{c.Id};{c.LastName};{c.FirstName};{c.MiddleName};{c.Residence}");
+        
+        foreach (var c in Clients)
+        {
+            sb.AppendLine(
+                $"{c.Id};{c.LastName};{c.FirstName};" +
+                $"{c.MiddleName};{c.Residence}");
+        }
+        
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
@@ -106,38 +136,48 @@ public class HotelManager
     // 1. [1 таблица] Перечень: Клиенты из Уфы
     public List<Client> GetUfaClients()
     {
-        return Clients.Where(c => c.Residence.Contains("Уфа")).ToList();
+        return Clients
+            .Where(c => c.Residence.Contains("Уфа"))
+            .ToList();
     }
 
-    // 2. [2 таблицы] Одно значение: Средняя длительность проживания
+    // 2. [2 таблицы] Значение: Средняя длительность
     public double GetAverageBookingDays()
     {
         var query = from b in Bookings 
-                    join c in Clients on b.ClientId equals c.Id 
+                    join c in Clients 
+                        on b.ClientId equals c.Id 
                     select b.Days;
+                    
         return query.Any() ? query.Average() : 0;
     }
 
-    // 3. [3 таблицы] Перечень: ФИО + Номер для клиентов из Уфы
+    // 3. [3 таблицы] Перечень: ФИО + Номер для Уфы
     public List<string> GetUfaClientRooms()
     {
         var query = from c in Clients
-                    join b in Bookings on c.Id equals b.ClientId
-                    join r in Rooms on b.RoomId equals r.Id
+                    join b in Bookings 
+                        on c.Id equals b.ClientId
+                    join r in Rooms 
+                        on b.RoomId equals r.Id
                     where c.Residence.Contains("Уфа")
-                    select $"{c.FullName} -> Номер {r.Id} (Кат. {r.Category})";
+                    select $"{c.FullName} -> " +
+                           $"Номер {r.Id} " +
+                           $"(Кат. {r.Category})";
         return query.ToList();
     }
 
-    // 4. [3 таблицы] Одно значение: 
+    // 4. [3 таблицы] Значение: 
     public decimal GetExampleQueryAnswer()
     {
         DateTime start = new DateTime(2019, 6, 1);
         DateTime end = new DateTime(2019, 6, 16);
 
         var query = from b in Bookings
-                    join c in Clients on b.ClientId equals c.Id
-                    join r in Rooms on b.RoomId equals r.Id
+                    join c in Clients 
+                        on b.ClientId equals c.Id
+                    join r in Rooms 
+                        on b.RoomId equals r.Id
                     where c.Residence.Contains("Уфа") 
                        && r.Category == 5
                        && b.BookingDate >= start 

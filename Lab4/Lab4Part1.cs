@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Lab4Part1;
+namespace Lab4;
 
 public static class Lab4Part1
 {

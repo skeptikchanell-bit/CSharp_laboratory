@@ -1,6 +1,6 @@
 using System;
 
-namespace Lab4Part2;
+namespace Lab4;
 
 public class Point
 {
